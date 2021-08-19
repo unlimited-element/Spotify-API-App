@@ -6,6 +6,7 @@ var axios = require('axios');
 var express = require('express'); // Express web server framework
 var cors = require('cors');
 var cookieParser = require('cookie-parser');
+var logger = require('morgan');
 require('dotenv').config();
 
 var client_id = process.env.CLIENT_ID; // Your client id
@@ -29,6 +30,12 @@ var app = express();
 app.use(express.static(__dirname + '/public'))
   .use(cors())
   .use(cookieParser());
+
+app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({
+  extended: false
+}));
 
 app.get('/login', function (req, res) {
 
@@ -136,5 +143,4 @@ app.get('/callback/', async function (req, res) {
   }
 });
 
-console.log('Listening on 8888');
-app.listen(8888);
+module.exports = app;
